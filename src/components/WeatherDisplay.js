@@ -2,26 +2,26 @@ import React from 'react';
 
 
 class WeatherDisplay extends React.Component {
-    constructor() {
-      super();
-      this.state = {
-        weatherData: null
-      };
-    }
+  constructor() {
+    super();
+    this.state = {
+      weatherData: null
+    };
+  }
 
-    componentDidMount() {
-      const URL = "http://localhost:22948/Weather";
-      let token = localStorage.getItem('access_token');
-      fetch(URL,{
-        headers : {authorization : 'Bearer '+token}
-      })
+  componentDidMount() {
+    const URL = "http://localhost:22948/Weather";
+    let token = localStorage.getItem('token');
+    fetch(URL, {
+      headers: { authorization: 'Bearer ' + token }
+    })
       .then(res => res.json())
       .then(json => {
-        this.setState({weatherData : json});
+        this.setState({ weatherData: json });
       })
-    };
-    render() {
-      const weatherData = this.state.weatherData;
+  };
+  render() {
+    const weatherData = this.state.weatherData;
     if (!weatherData) return <div>You should logged in to get access to weather</div>;
     return <div>{JSON.stringify(weatherData)}</div>;
   }
