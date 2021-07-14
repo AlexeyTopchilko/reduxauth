@@ -10,8 +10,7 @@ import { Redirect } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from './Copyright';
-import { useDispatch } from 'react-redux';
-import { signUp } from '../actions/userActions';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%',
@@ -34,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignUpForm() {
-
-  const dispatch = useDispatch();
 
   const classes = useStyles();
 
@@ -93,13 +86,34 @@ function SignUpForm() {
       passwordValid: passwordValid,
       formValid: usernameValid && passwordValid && emailValid
     }));
+
+
   }
-  
-  let userInfo = {
-    username: values.username,
-    password: values.password,
-    email: values.email
-  }
+
+  async function SignUp() {
+
+    let user = { username: values.username, email: values.email, password: values.password }
+    const URL = "http://localhost:22948/Register";
+    let response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(user)
+    });
+    let data = await response.json();
+    localStorage.setItem('status', data.status)
+    localStorage.setItem('message', data.message)
+    if (localStorage.getItem('status') === 'Success') {
+      alert(localStorage.getItem('message'))
+      setValues(oldValues => ({ ...oldValues, redirect: true }));
+    }
+    else {
+      alert(localStorage.getItem('message'))
+    }
+  };
+
+  if (values.redirect) { return <Redirect to='/signin' /> }
 
   return (
 
@@ -168,7 +182,7 @@ function SignUpForm() {
             variant="contained"
             className={classes.submit}
             disabled={!values.formValid}
-            onClick={() => { dispatch(signUp(userInfo)) }}
+            onClick={() => SignUp()}
           >
             Sign In
           </Button>

@@ -1,8 +1,15 @@
-function Home()
-{
-        return (
-            <h1>What's up?</h1>
-        )
-        }
+import { useSelector } from "react-redux";
 
-    export default Home;
+function Home() {
+
+    const authReducer = useSelector(state => state.authReducer)
+    if(authReducer.loggedIn){
+    return (
+        <h1>What's up, {authReducer.user} ?</h1>
+    )}
+    else{
+        return <h1>What's up?</h1>
+    }
+}
+
+export default Home;

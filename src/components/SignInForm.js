@@ -44,7 +44,6 @@ function SignInForm() {
     usernameValid: false,
     passwordValid: false,
     formValid: false,
-    redirect: false
   })
 
   const set = name => {

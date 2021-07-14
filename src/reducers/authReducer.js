@@ -8,7 +8,7 @@ const authReducer = (state = defaultState, action) => {
         case "SET_USER":
             return {
                 loggedIn: true,
-                user: { ...action.payload }
+                user: action.payload
             }
         case "SET_USER_FAIL":
             return{
