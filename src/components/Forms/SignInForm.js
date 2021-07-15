@@ -7,10 +7,11 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from './Copyright';
-
+import Copyright from './Copyright/Copyright';
+import { signIn } from '../../actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,19 +29,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignUpForm() {
+function SignInForm() {
+
+  const authReducer = useSelector(state => state.authReducer)
+
+  const dispatch = useDispatch();
 
   const classes = useStyles();
 
   const [values, setValues] = useState({
     username: '',
     password: '',
-    errors: { username: '', password: '', email: '' },
+    errors: { username: '', password: '' },
     usernameValid: false,
-    emailValid: false,
     passwordValid: false,
     formValid: false,
-    redirect: false
   })
 
   const set = name => {
@@ -50,78 +53,46 @@ function SignUpForm() {
     })
   }
 
-  useEffect(
-    (() => {
-      localStorage.removeItem('status');
-      localStorage.removeItem('message')
-    })
-  );
-
   function validateField(fieldName, value) {
     let fieldValidationErrors = values.errors;
     let usernameValid = values.usernameValid;
     let passwordValid = values.passwordValid;
-    let emailValid = values.emailValid;
 
     switch (fieldName) {
       case 'username':
-        usernameValid = value.length >= 3;
-        fieldValidationErrors.username = usernameValid ? '' : 'Too short';
+        usernameValid = value.length >= 1;
+        fieldValidationErrors.username = usernameValid ? '' : 'Can not be empty';
         break;
       case 'password':
-        passwordValid = value.length >= 5;
-        fieldValidationErrors.password = passwordValid ? '' : 'Too short';
-        break;
-      case 'email':
-        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : 'Email invalid'
-
-
+        passwordValid = value.length >= 1;
+        fieldValidationErrors.password = passwordValid ? '' : 'Can not be empty';
     }
     setValues(oldValues => ({
       ...oldValues,
       errors: fieldValidationErrors,
       usernameValid: usernameValid,
-      emailValid: emailValid,
       passwordValid: passwordValid,
-      formValid: usernameValid && passwordValid && emailValid
+      formValid: usernameValid && passwordValid
     }));
-
-
+  }
+  let userInfo = {
+    username: values.username,
+    password: values.password
   }
 
-  async function SignUp() {
+  if(authReducer.loggedIn)
+  {
+    return(<Redirect to='/weather'/>)
+  }
 
-    let user = { username: values.username, email: values.email, password: values.password }
-    const URL = "http://localhost:22948/Register";
-    let response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(user)
-    });
-    let data = await response.json();
-    localStorage.setItem('status', data.status)
-    localStorage.setItem('message', data.message)
-    if (localStorage.getItem('status') === 'Success') {
-      alert(localStorage.getItem('message'))
-      setValues(oldValues => ({ ...oldValues, redirect: true }));
-    }
-    else {
-      alert(localStorage.getItem('message'))
-    }
-  };
-
-  if (values.redirect) { return <Redirect to='/signin' /> }
-
+  else{
   return (
 
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper} >
         <Typography component="h1" variant="h4">
-          Sign up
+          Sign in
         </Typography>
         <form className={classes.form}>
           <Grid container spacing={2}>
@@ -140,23 +111,6 @@ function SignUpForm() {
                 helperText={values.errors.username}
                 value={values.username}
                 onChange={set('username')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                type='email'
-                fullWidth
-                id="email"
-                label="Email Address"
-                name='email'
-                inputProps={{ style: { fontSize: 18 } }}
-                error={values.errors.email}
-                helperText={values.errors.email}
-                autoComplete="email"
-                value={values.email}
-                onChange={set('email')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -182,14 +136,14 @@ function SignUpForm() {
             variant="contained"
             className={classes.submit}
             disabled={!values.formValid}
-            onClick={() => SignUp()}
+            onClick={() => { dispatch(signIn(userInfo)) }}
           >
             Sign In
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/signin" variant="h5">
-                Already have an account? Sign in
+              <Link href="/signup" variant="h5">
+                Don't have an account? Sign up
               </Link>
             </Grid>
           </Grid>
@@ -200,6 +154,7 @@ function SignUpForm() {
       </Box>
     </Container>
   )
+  }
 };
 
-export default SignUpForm;
+export default SignInForm;

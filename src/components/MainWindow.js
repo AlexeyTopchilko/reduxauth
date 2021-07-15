@@ -1,13 +1,13 @@
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import LogInButton from './LogInButton';
-import LogOutButton from './LogOutButton';
-import WeatherDisplay from './WeatherDisplay';
+import LogInButton from './Buttons/LogInButton';
+import LogOutButton from './Buttons/LogOutButton';
+import WeatherDisplay from './ForTest/WeatherDisplay';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Home from './Home';
-import SignInForm from './SignInForm';
-import SignUpForm from './SignUpForm';
+import SignInForm from './Forms/SignInForm';
+import SignUpForm from './Forms/SignUpForm';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
 
