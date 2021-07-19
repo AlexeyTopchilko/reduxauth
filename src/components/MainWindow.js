@@ -10,6 +10,9 @@ import SignInForm from './Forms/SignInForm';
 import SignUpForm from './Forms/SignUpForm';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
+import ProductsTest from './ForTest/productsTest';
+import ProductForm from './Forms/CatalogForms/ProductForm';
+import ProductsForm from './Forms/CatalogForms/ProductsForm';
 
 
 
@@ -45,6 +48,9 @@ const MainWindow = () => {
             <Button className={classes.title} variant="contained" color="primary" type="submit" href="/weather">
               Get Weather
             </Button>
+            <Button className={classes.title} variant="contained" color="primary" type="submit" href="/productstest">
+              products test
+            </Button>
             {!authReducer.loggedIn ? <LogInButton /> : <LogOutButton />}
           </Toolbar>
         </AppBar>
@@ -53,6 +59,7 @@ const MainWindow = () => {
             <Route exact path='/' component={Home} />
             <Route path='/signin' component={SignInForm} />
             <Route path='/signup' component={SignUpForm} />
+            <Route path='/productstest' component = {ProductsForm}/>
             <Route path='/weather' component={WeatherDisplay} />
           </Switch>
         </div>
