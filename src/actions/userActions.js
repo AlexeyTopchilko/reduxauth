@@ -1,9 +1,12 @@
-const setUser = (payload) => ({ type: "SET_USER", payload })
-const setUserFail = () => ({ type: "SET_USER_FAIL" })
-const delUser = () => ({ type: "LOG_OUT" })
+import { Login, URL } from '../Addresses/Addresses';
+import { SET_USER, SET_USER_FAIL, LOG_OUT } from './Types/userActionTypes';
+
+const setUser = (payload) => ({ type: SET_USER, payload })
+const setUserFail = () => ({ type: SET_USER_FAIL })
+const delUser = () => ({ type: LOG_OUT })
 
 export const signIn = (userInfo) => dispatch => {
-    fetch('http://localhost:22948/Login', {
+    fetch(URL + Login, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from './Copyright/Copyright';
+import Copyright from '../Copyright/Copyright';
 import { signIn } from '../../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -66,6 +66,10 @@ function SignInForm() {
       case 'password':
         passwordValid = value.length >= 1;
         fieldValidationErrors.password = passwordValid ? '' : 'Can not be empty';
+        break;
+
+      default:
+        break;
     }
     setValues(oldValues => ({
       ...oldValues,
@@ -80,80 +84,79 @@ function SignInForm() {
     password: values.password
   }
 
-  if(authReducer.loggedIn)
-  {
-    return(<Redirect to='/weather'/>)
+  if (authReducer.loggedIn) {
+    return (<Redirect to='/weather' />)
   }
 
-  else{
-  return (
+  else {
+    return (
 
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper} >
-        <Typography component="h1" variant="h4">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} >
-              <TextField
-                autoComplete="username"
-                name="username"
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
-                autoFocus
-                error={values.errors.username}
-                helperText={values.errors.username}
-                value={values.username}
-                onChange={set('username')}
-              />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper} >
+          <Typography component="h1" variant="h4">
+            Sign in
+          </Typography>
+          <form className={classes.form}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} >
+                <TextField
+                  autoComplete="username"
+                  name="username"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
+                  autoFocus
+                  error={values.errors.username}
+                  helperText={values.errors.username}
+                  value={values.username}
+                  onChange={set('username')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  error={values.errors.password}
+                  helperText={values.errors.password}
+                  inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
+                  value={values.password}
+                  onChange={set('password')}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                error={values.errors.password}
-                helperText={values.errors.password}
-                inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
-                value={values.password}
-                onChange={set('password')}
-              />
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              disabled={!values.formValid}
+              onClick={() => { dispatch(signIn(userInfo)) }}
+            >
+              Sign In
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/signup" variant="h5">
+                  Don't have an account? Sign up
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-            disabled={!values.formValid}
-            onClick={() => { dispatch(signIn(userInfo)) }}
-          >
-            Sign In
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/signup" variant="h5">
-                Don't have an account? Sign up
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
-  )
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+    )
   }
 };
 

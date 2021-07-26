@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class WeatherDisplay extends React.Component {
   constructor() {
     super();
