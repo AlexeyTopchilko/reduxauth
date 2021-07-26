@@ -1,18 +1,16 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import LogInButton from './Buttons/LogInButton';
-import LogOutButton from './Buttons/LogOutButton';
+import LogInButton from './Authentication/Buttons/LogInButton';
+import LogOutButton from './Authentication/Buttons/LogOutButton';
 import WeatherDisplay from './ForTest/WeatherDisplay';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Home from './Home';
-import SignInForm from './Forms/SignInForm';
-import SignUpForm from './Forms/SignUpForm';
+import SignInForm from './Authentication/SignInForm';
+import SignUpForm from './Authentication/SignUpForm';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
-import ProductsTest from './ForTest/productsTest';
-import ProductForm from './Forms/CatalogForms/ProductForm';
-import ProductsForm from './Forms/CatalogForms/ProductsForm';
+import CatalogForm from './Catalog/CatalogForm';
 
 
 
@@ -29,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
-
 
 const MainWindow = () => {
 
@@ -59,7 +56,7 @@ const MainWindow = () => {
             <Route exact path='/' component={Home} />
             <Route path='/signin' component={SignInForm} />
             <Route path='/signup' component={SignUpForm} />
-            <Route path='/productstest' component = {ProductsForm}/>
+            <Route path='/productstest' component = {CatalogForm}/>
             <Route path='/weather' component={WeatherDisplay} />
           </Switch>
         </div>

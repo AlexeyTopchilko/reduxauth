@@ -2,6 +2,7 @@ import authReducer from "./authReducer";
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import catalogReducer from "./catalogReducer";
 
 
 const persistConfig = {
@@ -10,7 +11,8 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    authReducer
+    authReducer,
+    catalogReducer
 })
 
 export default persistReducer(persistConfig,rootReducer);

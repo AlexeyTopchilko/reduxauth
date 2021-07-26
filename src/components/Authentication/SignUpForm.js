@@ -9,7 +9,8 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from './Copyright/Copyright';
+import Copyright from '../Copyright/Copyright';
+import { Registry, URL } from '../../Addresses/Addresses';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,6 +76,9 @@ function SignUpForm() {
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
         fieldValidationErrors.email = emailValid ? '' : 'Email invalid'
+        break;
+      default:
+        break;
 
 
     }
@@ -93,8 +97,7 @@ function SignUpForm() {
   async function SignUp() {
 
     let user = { username: values.username, email: values.email, password: values.password }
-    const URL = "http://localhost:22948/Register";
-    let response = await fetch(URL, {
+    let response = await fetch(URL + Registry, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'

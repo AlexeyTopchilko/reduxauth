@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import ProductsForm from "./Forms/CatalogForms/ProductsForm";
 
 function Home() {
 
@@ -7,7 +6,6 @@ function Home() {
     if(authReducer.loggedIn){
     return (<div>
         <h1>What's up, {authReducer.user} ?</h1>
-        <ProductsForm />
         </div>
     )}
     else{

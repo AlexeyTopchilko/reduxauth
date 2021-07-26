@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <Box border={1} borderColor = "primary.main" className={classes.root}>
         <div className={classes.section1}>
-          <Grid container alignItems="flex-start" style ={{height : '15vh', flexDirection : 'column'}} >
+          <Grid container alignItems="flex-start" style ={{ flexDirection : 'column'}} >
               <Typography  variant="h4">
                 {name}
               </Typography>
