@@ -37,7 +37,7 @@ const MainWindow = () => {
   return (
     <BrowserRouter>
       <div className={classes.root} >
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <Button className={classes.menuButton} variant="contained" color="primary" type="submit" href="/">
               Home
