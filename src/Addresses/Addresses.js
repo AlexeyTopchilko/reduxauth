@@ -5,3 +5,4 @@ export const Categories = '/Catalog';
 export const Products = '/Products';
 export const ProductsByName = '/ProductsByName';
 export const ProductsByCategory = '/ProductsByCategory';
+export const ProductById = '/ProductById';

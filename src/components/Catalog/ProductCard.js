@@ -29,10 +29,11 @@ export default function ProductCard(props) {
     const price = props.price;
     const description = props.description;
     const image = props.image;
+    const id = props.id;
 
   return (
     <Card className={classes.root} xs={3}>
-      <CardActionArea style={{marginBottom : 10}} >
+      <CardActionArea style={{marginBottom : 10}} href ={'/product/id='+id} >
         <CardMedia
           className={classes.media}
           image={"https://blobforcatalog.blob.core.windows.net/blobforcatalog/Images/"+image}

@@ -87,7 +87,7 @@ export default function CatalogForm() {
     async function GetProductsByCategory() {
         let response = await fetch(URL + ProductsByCategory, {
             method: 'POST',
-            body: catalogReducer.currentCategory,
+            body: catalogReducer.currentCategory.id,
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
@@ -101,7 +101,7 @@ export default function CatalogForm() {
              GetProductByName();
          }
          else{
-        if (catalogReducer.currentCategory === null) { GetProducts();}
+        if (catalogReducer.currentCategory.id === null) { GetProducts();}
         else { GetProductsByCategory();}
         }}
     
@@ -141,7 +141,7 @@ export default function CatalogForm() {
       </Grid>
       <Grid item>
           <Typography component="h1" variant="h4">
-            {(catalogReducer.currentCategory !== null)?  categories.find(_ => _.id ===catalogReducer.currentCategory).name : 'All Categories'}
+            {catalogReducer.currentCategory.name}
           </Typography>
       </Grid>
       <Grid item>

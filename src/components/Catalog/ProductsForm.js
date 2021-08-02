@@ -9,7 +9,7 @@ export default function ProductsForm(props) {
             <Grid container  justifyContent = "flex-start" spacing={2} style={{ display: 'flex', alignContent: 'normal' }} >
                 {props.products.map(item =>
                     <Grid item key={item.id} md={3} >
-                        <ProductCard name={item.name} price={item.price} description={item.description} image={item.image}/>
+                        <ProductCard id = {item.id} name={item.name} price={item.price} description={item.description} image={item.image}/>
                     </Grid>
                 )}
             </Grid>
