@@ -1,7 +1,8 @@
 import { RESET_CATEGORY, SET_CATEGORY, SET_SEARCH_MOD } from "../actions/Types/catalogActionTypes"
 
 const defaultState = {
-    currentCategory: null,
+    currentCategory: { id :null,
+        name : 'All Categories'},
     searchMod: false,
     searchString: {},
 }
@@ -17,13 +18,15 @@ const catalogReducer = (state = defaultState, action) => {
             }
         case RESET_CATEGORY:
             return {
-                currentCategory: null,
+                currentCategory: { id :null,
+                    name : 'All Categories'},
                 searchMod: false,
                 searcString: {}
             }
         case SET_SEARCH_MOD:
             return {
-                currentCategory: null,
+                currentCategory: { id :null,
+                    name : 'All Categories'},
                 searchMod: true,
                 searchString: action.payload
             }

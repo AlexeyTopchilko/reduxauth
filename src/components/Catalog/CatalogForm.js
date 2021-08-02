@@ -1,7 +1,6 @@
 import React from 'react';
 import {makeStyles } from '@material-ui/core/styles';
 import ProductsForm from './ProductsForm';
-import { Grid } from '@material-ui/core';
 import CategoryForm from './CategoryForm';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +8,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { SetSearchMod } from '../../actions/catalogActions';
 import { Categories, Products, ProductsByCategory, ProductsByName, URL } from '../../Addresses/Addresses';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import { Grid } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -21,16 +25,10 @@ const useStyles = makeStyles((theme) => ({
         width: `100% px`,
         marginLeft: drawerWidth,
     },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     content: {
+        marginLeft : 190,
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
@@ -43,6 +41,11 @@ export default function CatalogForm() {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState('');
+    const [sortMode, setSortMode] = useState('');
+
+    const handleSort = (e) =>{
+        setSortMode(e.target.value);
+    }
 
     const catalogReducer = useSelector(state => state.catalogReducer)
 
@@ -84,7 +87,7 @@ export default function CatalogForm() {
     async function GetProductsByCategory() {
         let response = await fetch(URL + ProductsByCategory, {
             method: 'POST',
-            body: catalogReducer.currentCategory,
+            body: catalogReducer.currentCategory.id,
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
@@ -98,7 +101,7 @@ export default function CatalogForm() {
              GetProductByName();
          }
          else{
-        if (catalogReducer.currentCategory === null) { GetProducts();}
+        if (catalogReducer.currentCategory.id === null) { GetProducts();}
         else { GetProductsByCategory();}
         }}
     
@@ -115,9 +118,12 @@ export default function CatalogForm() {
 
     return (
         <Grid className={classes.root}>
-            <div className={classes.toolbar} />
+            <div style ={{position : 'fixed'}}>
             <CategoryForm categories={categories} />
+            </div>
             <main className={classes.content}>
+                <Grid container justifyContent="space-between"  >
+                    <Grid item>
             <TextField
                 name="search"
                 variant="outlined"
@@ -132,8 +138,22 @@ export default function CatalogForm() {
               <Button variant="contained" color="primary"   onClick = {() => {sendSearch(); setSearch('')}}  >
         Ok
       </Button>
+      </Grid>
+      <Grid item>
+          <Typography component="h1" variant="h4">
+            {catalogReducer.currentCategory.name}
+          </Typography>
+      </Grid>
+      <Grid item>
+      <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+      <Select value = {sortMode} onChange = {handleSort}>
+          <MenuItem value={1}>Price ascending</MenuItem>
+          <MenuItem value={2}>Price descending</MenuItem>
+        </Select>
+        </Grid>
+        </Grid>
                 <div className={classes.toolbar} />
-                <ProductsForm products={products} />
+                <ProductsForm products = {(sortMode === 1 )? products.sort((a,b)=> b.price - a.price) : (sortMode === 2) ? products.sort((a,b) => a.price - b.price) : products}/>
             </main>
         </Grid>
     );

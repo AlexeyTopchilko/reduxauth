@@ -11,6 +11,7 @@ import SignUpForm from './Authentication/SignUpForm';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
 import CatalogForm from './Catalog/CatalogForm';
+import ProductPage from './Catalog/ProductPage';
 
 
 
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    
   },
 }));
 
@@ -37,7 +39,7 @@ const MainWindow = () => {
   return (
     <BrowserRouter>
       <div className={classes.root} >
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <Button className={classes.menuButton} variant="contained" color="primary" type="submit" href="/">
               Home
@@ -46,7 +48,7 @@ const MainWindow = () => {
               Get Weather
             </Button>
             <Button className={classes.title} variant="contained" color="primary" type="submit" href="/productstest">
-              products test
+              Products
             </Button>
             {!authReducer.loggedIn ? <LogInButton /> : <LogOutButton />}
           </Toolbar>
@@ -54,10 +56,11 @@ const MainWindow = () => {
         <div>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route path='/signin' component={SignInForm} />
-            <Route path='/signup' component={SignUpForm} />
-            <Route path='/productstest' component = {CatalogForm}/>
-            <Route path='/weather' component={WeatherDisplay} />
+            <Route exact path='/signin' component={SignInForm} />
+            <Route exact path='/signup' component={SignUpForm} />
+            <Route exact path='/productstest' component = {CatalogForm}/>
+            <Route exact path='/weather' component={WeatherDisplay} />
+            <Route exact path ='/product/id=:id' component ={ProductPage} />
           </Switch>
         </div>
       </div>
