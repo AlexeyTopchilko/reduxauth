@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
 import CatalogForm from './Catalog/CatalogForm';
 import ProductPage from './Catalog/ProductPage';
+import { blue, blueGrey, brown, purple } from '@material-ui/core/colors';
+import { dark } from '@material-ui/core/styles/createPalette';
 
 
 
@@ -23,11 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    backgroundColor : blue[700],
   },
   title: {
     flexGrow: 1,
+    backgroundColor : blue[700],
     
   },
+  authButtton:{
+    marginLeft : theme.spacing(2),
+    backgroundColor : blue[700],
+  }
 }));
 
 const MainWindow = () => {
@@ -41,16 +49,16 @@ const MainWindow = () => {
       <div className={classes.root} >
         <AppBar position="sticky">
           <Toolbar>
-            <Button className={classes.menuButton} variant="contained" color="primary" type="submit" href="/">
+            <Button className={classes.menuButton} variant="contained"  type="submit" href="/">
               Home
             </Button >
-            <Button className={classes.title} variant="contained" color="primary" type="submit" href="/weather">
-              Get Weather
+            <Button className={classes.title} variant="contained"  type="submit" href="/catalog">
+              Catalog
+            </Button >
+            <Button className={classes.title} variant="contained"  type="submit" href="/weather">
+              Admin space
             </Button>
-            <Button className={classes.title} variant="contained" color="primary" type="submit" href="/productstest">
-              Products
-            </Button>
-            {!authReducer.loggedIn ? <LogInButton /> : <LogOutButton />}
+            {!authReducer.loggedIn ? <LogInButton className={classes.authButtton} /> : <LogOutButton className={classes.authButtton} />}
           </Toolbar>
         </AppBar>
         <div>
@@ -58,7 +66,7 @@ const MainWindow = () => {
             <Route exact path='/' component={Home} />
             <Route exact path='/signin' component={SignInForm} />
             <Route exact path='/signup' component={SignUpForm} />
-            <Route exact path='/productstest' component = {CatalogForm}/>
+            <Route exact path='/catalog' component = {CatalogForm}/>
             <Route exact path='/weather' component={WeatherDisplay} />
             <Route exact path ='/product/id=:id' component ={ProductPage} />
           </Switch>

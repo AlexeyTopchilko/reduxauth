@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button';
 
- function LogInButton()
+ function LogInButton(props)
 {
      return (
-        <Button variant="contained" color="primary" type="button"  href="/signin">
+        <Button className={props.className} variant="contained" type="button"  href="/signin">
           Sign In
          </Button>
             )

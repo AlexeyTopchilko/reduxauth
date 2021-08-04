@@ -66,27 +66,11 @@ return(
         <Button className = {classes.button} size="small" color="primary">
           Add to cart
         </Button>
+        <Button className = {classes.button} size="small" color="primary">
+          Edit
+        </Button>
+
         </div>
-    
-    // <div>
-    //     <div>
-    // <image src={"https://blobforcatalog.blob.core.windows.net/blobforcatalog/Images/"+product.image} alt ={product.name} />
-    // </div>
-    // <Grid container >
-    //     <Grid item>
-    //         <Typography variant="h5" component="h2">{product.name}
-    //         </Typography>
-    //     </Grid>
-    //     <Grid item>
-    //         <Typography variant="h6" component="h2">{product.price}$
-    //         </Typography>
-    //     </Grid>
-    //     <Grid item>
-    //         <Typography variant="body2" color="textSecondary">{product.description}
-    //         </Typography>
-    //     </Grid>
-    // </Grid>
-    // </div>
 )}
 else{ return( <h1>Loading...</h1>)}
 }

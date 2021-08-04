@@ -15,7 +15,7 @@ export default function CategoryForm(props) {
 
     return (
         <List container alignItems="flex-start" style ={{ flexDirection : 'column', }} >
-            <MenuItem button key='null' selected ={catalogReducer.currentCategory.id === null}  style ={{color : 'royalblue'}} onClick = {()=>{dispatch(ResetCategory()); setId(null)}} >
+            <MenuItem button key='null' selected ={catalogReducer.currentCategory.id === 0}  style ={{color : 'royalblue'}} onClick = {()=>{dispatch(ResetCategory()); setId(0)}} >
                                    <ListItemText primary="All"  />
                             </MenuItem>
             {props.categories.map(item =>
