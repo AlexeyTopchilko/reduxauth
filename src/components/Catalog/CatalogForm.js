@@ -41,7 +41,7 @@ export default function CatalogForm() {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState('');
-    const [sortMode, setSortMode] = useState('');
+    const [sortMode, setSortMode] = useState(0);
 
     const handleSort = (e) =>{
         setSortMode(e.target.value);
@@ -64,7 +64,8 @@ export default function CatalogForm() {
 
     async function GetProducts() {
         let response = await fetch(URL + Products, {
-            method: 'GET',
+            method: 'POST',
+            body : sortMode,
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
@@ -76,7 +77,8 @@ export default function CatalogForm() {
     async function GetProductByName(){
         let response = await fetch(URL + ProductsByName, {
             method: 'POST',
-            body: JSON.stringify(catalogReducer.searchString), 
+            body: JSON.stringify({ name : catalogReducer.searchString,
+                sortMode : sortMode}), 
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
@@ -87,7 +89,7 @@ export default function CatalogForm() {
     async function GetProductsByCategory() {
         let response = await fetch(URL + ProductsByCategory, {
             method: 'POST',
-            body: catalogReducer.currentCategory.id,
+            body: JSON.stringify({id: catalogReducer.currentCategory.id , sortMode: sortMode}),
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
@@ -96,20 +98,20 @@ export default function CatalogForm() {
         setProducts(data);
     }
 
-    function ghghghg() {
+    function startMod() {
         if(catalogReducer.searchMod){
              GetProductByName();
          }
          else{
-        if (catalogReducer.currentCategory.id === null) { GetProducts();}
+        if (catalogReducer.currentCategory.id === 0) { GetProducts();}
         else { GetProductsByCategory();}
         }}
     
     useEffect(
         () => {
             GetCategories()
-            ghghghg()
-        },[catalogReducer])
+            startMod()
+        },[catalogReducer,sortMode])
     
     function sendSearch() {
         dispatch(SetSearchMod(search))
@@ -124,20 +126,20 @@ export default function CatalogForm() {
             <main className={classes.content}>
                 <Grid container justifyContent="space-between"  >
                     <Grid item>
+                        <Grid container>
             <TextField
                 name="search"
                 variant="outlined"
                 id="search"
                 label="Search..."
                 inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
-                //error={values.errors.username}
-                //helperText={values.errors.username}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
-              <Button variant="contained" color="primary"   onClick = {() => {sendSearch(); setSearch('')}}  >
+              <Button variant='contained' color="primary"   onClick = {() => {sendSearch(); setSearch('')}}  >
         Ok
       </Button>
+      </Grid>
       </Grid>
       <Grid item>
           <Typography component="h1" variant="h4">
@@ -147,13 +149,15 @@ export default function CatalogForm() {
       <Grid item>
       <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
       <Select value = {sortMode} onChange = {handleSort}>
+          <MenuItem value={0}>Default</MenuItem>
           <MenuItem value={1}>Price ascending</MenuItem>
           <MenuItem value={2}>Price descending</MenuItem>
+          <MenuItem value={3}>ByName</MenuItem>
         </Select>
         </Grid>
         </Grid>
                 <div className={classes.toolbar} />
-                <ProductsForm products = {(sortMode === 1 )? products.sort((a,b)=> b.price - a.price) : (sortMode === 2) ? products.sort((a,b) => a.price - b.price) : products}/>
+                <ProductsForm products = {products}/>
             </main>
         </Grid>
     );
