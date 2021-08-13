@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 
 
 export default function ProductsForm(props) {
-    if (props.products.length > 0) {
+    if (!!props.products) {
         return (
             <Grid container  justifyContent = "flex-start" spacing={2} style={{ display: 'flex', alignContent: 'normal' }} >
                 {props.products.map(item =>

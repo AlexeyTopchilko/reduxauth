@@ -35,6 +35,7 @@ function SignUpForm() {
 
   const [values, setValues] = useState({
     username: '',
+    email: '',
     password: '',
     errors: { username: '', password: '', email: '' },
     usernameValid: false,
@@ -66,11 +67,11 @@ function SignUpForm() {
 
     switch (fieldName) {
       case 'username':
-        usernameValid = value.length >= 3;
+        usernameValid = value.length >= 3 && value.length <= 10;
         fieldValidationErrors.username = usernameValid ? '' : 'Too short';
         break;
       case 'password':
-        passwordValid = value.length >= 5;
+        passwordValid = value.length >= 5 && value.length <= 24;
         fieldValidationErrors.password = passwordValid ? '' : 'Too short';
         break;
       case 'email':
@@ -139,7 +140,7 @@ function SignUpForm() {
                 label="Username"
                 inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                 autoFocus
-                error={values.errors.username}
+                error={values.errors.username !==''}
                 helperText={values.errors.username}
                 value={values.username}
                 onChange={set('username')}
@@ -155,7 +156,7 @@ function SignUpForm() {
                 label="Email Address"
                 name='email'
                 inputProps={{ style: { fontSize: 18 } }}
-                error={values.errors.email}
+                error={values.errors.email !==''}
                 helperText={values.errors.email}
                 autoComplete="email"
                 value={values.email}
@@ -171,7 +172,7 @@ function SignUpForm() {
                 label="Password"
                 type="password"
                 id="password"
-                error={values.errors.password}
+                error={values.errors.password !==''}
                 helperText={values.errors.password}
                 inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                 value={values.password}
@@ -189,7 +190,7 @@ function SignUpForm() {
           >
             Sign In
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin" variant="h5">
                 Already have an account? Sign in

@@ -110,7 +110,7 @@ function SignInForm() {
                   label="Username"
                   inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                   autoFocus
-                  error={values.errors.username}
+                  error={values.errors.username !==''}
                   helperText={values.errors.username}
                   value={values.username}
                   onChange={set('username')}
@@ -125,7 +125,7 @@ function SignInForm() {
                   label="Password"
                   type="password"
                   id="password"
-                  error={values.errors.password}
+                  error={values.errors.password !==''}
                   helperText={values.errors.password}
                   inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                   value={values.password}
@@ -143,7 +143,7 @@ function SignInForm() {
             >
               Sign In
             </Button>
-            <Grid container justify="flex-end">
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signup" variant="h5">
                   Don't have an account? Sign up
