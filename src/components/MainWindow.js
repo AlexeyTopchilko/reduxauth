@@ -12,8 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux'
 import CatalogForm from './Catalog/CatalogForm';
 import ProductPage from './Catalog/ProductPage';
-import { blue, blueGrey, brown, purple } from '@material-ui/core/colors';
-import { dark } from '@material-ui/core/styles/createPalette';
+import { blue} from '@material-ui/core/colors';
 
 
 
@@ -24,17 +23,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
-    backgroundColor : blue[700],
+    marginRight: theme.spacing(2)
+  },
+  appBar:{
+    backgroundColor : blue[500]
   },
   title: {
     flexGrow: 1,
-    backgroundColor : blue[700],
     
   },
   authButtton:{
     marginLeft : theme.spacing(2),
-    backgroundColor : blue[700],
   }
 }));
 
@@ -47,16 +46,16 @@ const MainWindow = () => {
   return (
     <BrowserRouter>
       <div className={classes.root} >
-        <AppBar position="sticky">
+        <AppBar className ={classes.appBar} position="sticky">
           <Toolbar>
-            <Button className={classes.menuButton} variant="contained"  type="submit" href="/">
+            <Button className={classes.menuButton} variant="contained" color="primary"  type="submit" href="/">
               Home
             </Button >
-            <Button className={classes.title} variant="contained"  type="submit" href="/catalog">
+            <Button className={classes.title} variant="contained"  type="submit" color="primary"  href="/catalog">
               Catalog
             </Button >
-            <Button className={classes.title} variant="contained"  type="submit" href="/weather">
-              Admin space
+            <Button className={classes.title} variant="contained" color="primary"  type="submit" href="/weather">
+              Authorized space
             </Button>
             {!authReducer.loggedIn ? <LogInButton className={classes.authButtton} /> : <LogOutButton className={classes.authButtton} />}
           </Toolbar>

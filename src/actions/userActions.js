@@ -23,7 +23,7 @@ export const signIn = (userInfo) => dispatch => {
                 dispatch(setUser(data.username))
             }
             else {
-                alert('Wrong username or password')
+                alert('Wrong username or password!')
                 dispatch(setUserFail())
             }
         })

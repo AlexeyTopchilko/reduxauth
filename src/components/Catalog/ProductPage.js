@@ -1,10 +1,7 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { useEffect, useState } from 'react';
 import { ProductById, URL } from "../../Addresses/Addresses";
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,9 +26,9 @@ export default function ProductPage(props)
     const [product, setProduct] = useState(null);
     
      async function GetProductById() {
-        let response = await fetch(URL + ProductById, {
-             method: 'POST',
-             body: id,
+       let params = "?id="+id;
+        let response = await fetch(URL + ProductById+params, {
+             method: 'GET',
              headers: {
                  'Content-Type': 'application/json;charset=utf-8'
             }

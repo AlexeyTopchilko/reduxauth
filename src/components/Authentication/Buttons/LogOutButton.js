@@ -6,7 +6,7 @@ function LogOutButton(props) {
     const dispatch = useDispatch();
 
     return (
-        <Button className={props.className} variant="contained"  type="button" onClick={() => {
+        <Button className={props.className} variant="contained" color='primary' type="button" onClick={() => {
             dispatch(logOut())
         }}>
             Logout
