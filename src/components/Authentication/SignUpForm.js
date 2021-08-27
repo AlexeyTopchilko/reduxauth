@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   form: {
-    width: '100%',
+    maxWidth: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -68,11 +68,11 @@ function SignUpForm() {
     switch (fieldName) {
       case 'username':
         usernameValid = value.length >= 3 && value.length <= 10;
-        fieldValidationErrors.username = usernameValid ? '' : 'Too short';
+        fieldValidationErrors.username = usernameValid ? '' : 'Must be between 3 and 10 symbols';
         break;
       case 'password':
         passwordValid = value.length >= 5 && value.length <= 24;
-        fieldValidationErrors.password = passwordValid ? '' : 'Too short';
+        fieldValidationErrors.password = passwordValid ? '' : 'Must be between 5 and 24 symbols';
         break;
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -199,7 +199,7 @@ function SignUpForm() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
+      <Box style ={{ marginTop: 60}}>
         <Copyright />
       </Box>
     </Container>

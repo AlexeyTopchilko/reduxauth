@@ -13,6 +13,9 @@ import { useSelector } from 'react-redux'
 import CatalogForm from './Catalog/CatalogForm';
 import ProductPage from './Catalog/ProductPage';
 import { blue} from '@material-ui/core/colors';
+import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
+import HomeIcon from '@material-ui/icons/Home';
+import Cart from './Cart/Cart';
 
 
 
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     
   },
   authButtton:{
-    marginLeft : theme.spacing(2),
+    marginLeft : theme.spacing(3),
   }
 }));
 
@@ -48,16 +51,19 @@ const MainWindow = () => {
       <div className={classes.root} >
         <AppBar className ={classes.appBar} position="sticky">
           <Toolbar>
-            <Button className={classes.menuButton} variant="contained" color="primary"  type="submit" href="/">
+            <Button className={classes.menuButton} variant="contained" startIcon={<HomeIcon />} color="primary"  type="submit" href="/">
               Home
             </Button >
             <Button className={classes.title} variant="contained"  type="submit" color="primary"  href="/catalog">
               Catalog
             </Button >
-            <Button className={classes.title} variant="contained" color="primary"  type="submit" href="/weather">
+            {authReducer.loggedIn? <Button className={classes.title} variant="contained" color="primary"  type="submit" href="/weather">
               Authorized space
-            </Button>
+            </Button> : <Button style={{display : 'none'}} />}
             {!authReducer.loggedIn ? <LogInButton className={classes.authButtton} /> : <LogOutButton className={classes.authButtton} />}
+            <Button className={classes.authButtton} color = "primary" variant="contained" startIcon={<LocalGroceryStoreIcon  />} href ="/Cart">
+              Cart
+              </Button>
           </Toolbar>
         </AppBar>
         <div>
@@ -68,12 +74,12 @@ const MainWindow = () => {
             <Route exact path='/catalog' component = {CatalogForm}/>
             <Route exact path='/weather' component={WeatherDisplay} />
             <Route exact path ='/product/id=:id' component ={ProductPage} />
+            <Route exact path="/Cart" component={Cart} />
           </Switch>
         </div>
       </div>
     </BrowserRouter>
   );
 }
-
 
 export default MainWindow;

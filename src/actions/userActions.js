@@ -20,7 +20,7 @@ export const signIn = (userInfo) => dispatch => {
             if (data.access_token) {
                 localStorage.setItem('token', data.access_token)
                 alert('Welcome,' + data.username + '!')
-                dispatch(setUser(data.username))
+                dispatch(setUser({name : data.username, id : data.id} ))
             }
             else {
                 alert('Wrong username or password!')
