@@ -11,7 +11,8 @@ export default function CategoryForm(props) {
     const dispatch = useDispatch();
     const catalogReducer = useSelector(state => state.catalogReducer)
     const [id, setId] = useState(catalogReducer.currentCategory.id);
-
+    try
+    {
     return (
         <List container="true" alignitems="flex-start" style ={{ flexDirection : 'column', }} >
             <MenuItem button key='null' selected ={catalogReducer.currentCategory.id === 0}  style ={{color : 'royalblue'}} 
@@ -25,5 +26,8 @@ export default function CategoryForm(props) {
                             </MenuItem>
                         )}
             </List>
-    )
+    )}
+    catch{
+        return <h1></h1>
+    }
 }

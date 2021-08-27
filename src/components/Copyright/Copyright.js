@@ -3,7 +3,7 @@ import Link from '@material-ui/core/Link';
 
 function Copyright() {
     return (
-      <Typography variant="h4" color="textSecondary" align="center">
+      <Typography variant="h6" color="textSecondary" align="center">
         {'Topchilko©'}
         <Link color="inherit" href="https://www.itechart.by/">
         ItechArt 

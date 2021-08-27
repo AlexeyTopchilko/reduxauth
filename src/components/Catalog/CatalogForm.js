@@ -13,6 +13,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
+import SearchIcon from '@material-ui/icons/Search'
+import SortButtons from './Buttons/SortButtons';
+import PageSizeButtons from './Buttons/PageSizeButtons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,8 +55,8 @@ export default function CatalogForm() {
         setPage(value)
     }
 
-    const handlePageSize = (e) =>{
-        setPageSize(e.target.value);
+    const handlePageSize = (size) => {
+        setPageSize(size);
         setPage(1);
     }
 
@@ -61,8 +64,8 @@ export default function CatalogForm() {
         setPage(1);
     }
 
-    const handleSort = (e) => {
-        setSortMode(e.target.value);
+    const handleSort = (index) => {
+        setSortMode(index);
         setPage(1);
     }
 
@@ -158,9 +161,7 @@ export default function CatalogForm() {
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
                             />
-                            <Button variant='contained' color="primary" onClick={() => { sendSearch(); setSearch(''); setPage(1) }}  >
-                                Ok
-                            </Button>
+                            <Button variant='contained' color="primary" startIcon={<SearchIcon />} onClick={() => { sendSearch(); setSearch(''); setPage(1) }} />
                         </Grid>
                     </Grid>
                     <Grid item>
@@ -174,24 +175,12 @@ export default function CatalogForm() {
                         }
                     </Grid>
                     <Grid item >
-                        {//<InputLabel id="demo-simple-select-label">Sort By</InputLabel>}
-                        }
-                        <Grid container direction='column' spacing={2}>
+                        <Grid container  spacing={2}>
                             <Grid item>
-                            <Select value={sortMode} onChange={handleSort}>
-                                <MenuItem value={0}>Default sort</MenuItem>
-                                <MenuItem value={1}>Sort by price ascending</MenuItem>
-                                <MenuItem value={2}>Sort by price descending</MenuItem>
-                                <MenuItem value={3}>Sort by name</MenuItem>
-                            </Select>
+                            <SortButtons color="primary" sortMode={sortMode} setSortMode={handleSort} />
                             </Grid>
                             <Grid item>
-                            <Select value={pageSize} onChange={handlePageSize}>
-                                <MenuItem value={4}>Show 4 products on page</MenuItem>
-                                <MenuItem value={8}>Show 8 products on page</MenuItem>
-                                <MenuItem value={12}>Show 12 products on page</MenuItem>
-                                <MenuItem value={16}>Show 16 products on page</MenuItem>
-                            </Select>
+                                <PageSizeButtons pageSize={pageSize} setPageSize={handlePageSize} />
                             </Grid>
                         </Grid>
                     </Grid>

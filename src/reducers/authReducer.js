@@ -2,7 +2,10 @@ import { SET_USER, SET_USER_FAIL, LOG_OUT } from '../actions/Types/userActionTyp
 
 const defaultState = {
     loggedIn: false,
-    user: {}
+    user: {
+        id : 0,
+        name : ""
+    }
 }
 
 const authReducer = (state = defaultState, action) => {
@@ -10,17 +13,15 @@ const authReducer = (state = defaultState, action) => {
         case SET_USER:
             return {
                 loggedIn: true,
-                user: action.payload
+                user:  action.payload
             }
         case SET_USER_FAIL:
             return{
-                loggedIn : false,
-                user: {}
+                state
             }    
         case LOG_OUT:
             return {
-                loggedIn: false,
-                user: {}
+                state
             }
         default: return state
     }

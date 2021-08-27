@@ -6,3 +6,7 @@ export const Products = '/Products';
 export const ProductsByName = '/ProductsByName';
 export const ProductsByCategory = '/ProductsByCategory';
 export const ProductById = '/ProductById';
+export const AddToCart = '/AddToCart';
+export const OrderByUser = '/GetActiveByUser';
+export const RemoveCartLine ='/DeleteCartLine';
+export const CHANGEQUANTITY= '/ChangeQuantity';
