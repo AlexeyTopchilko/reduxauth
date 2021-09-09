@@ -11,7 +11,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../Copyright/Copyright';
 import { signIn } from '../../actions/userActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignInForm() {
-
-  const authReducer = useSelector(state => state.authReducer)
-
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -44,7 +43,11 @@ function SignInForm() {
     usernameValid: false,
     passwordValid: false,
     formValid: false,
-  })
+  });
+  const [open,setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   const set = name => {
     return (({ target: { value } }) => {
@@ -84,7 +87,32 @@ function SignInForm() {
     password: values.password
   }
 
-  if (authReducer.loggedIn) {
+  function wait(time) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+
+  async function LogIn(){
+  dispatch(signIn(userInfo));
+  await wait(500);
+  if(localStorage.getItem('token')){
+    setSeverity('success');
+    setMessage('Wellcome!');
+    setOpen(true);
+    await wait(1500);
+    setRedirect(true);
+  }
+  else{
+    setSeverity('error');
+    setMessage('Wrong username or password!');
+    setOpen(true);
+  }
+}
+
+  if (redirect) {
     return (<Redirect to='/weather' />)
   }
 
@@ -139,7 +167,7 @@ function SignInForm() {
               variant="contained"
               className={classes.submit}
               disabled={!values.formValid}
-              onClick={() => { dispatch(signIn(userInfo)) }}
+              onClick={LogIn}
             >
               Sign In
             </Button>
@@ -155,6 +183,9 @@ function SignInForm() {
         <Box style={{marginTop: 60}}>
           <Copyright />
         </Box>
+        <Snackbar  open={open} anchorOrigin={{vertical :'top', horizontal: 'right'}} style={{marginTop: 80}}>
+        <Alert severity={severity}>{message}</Alert>
+      </Snackbar>
       </Container>
     )
   }

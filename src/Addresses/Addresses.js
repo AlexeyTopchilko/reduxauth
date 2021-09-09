@@ -10,3 +10,7 @@ export const AddToCart = '/AddToCart';
 export const OrderByUser = '/GetActiveByUser';
 export const RemoveCartLine ='/DeleteCartLine';
 export const CHANGEQUANTITY= '/ChangeQuantity';
+export const AddAddress = '/AddAddress';
+export const GetUserAddresses = '/GetUserAddresses';
+export const CreateAddress = '/CreateAddress';
+export const DeleteAddress = '/DeleteAddress';
