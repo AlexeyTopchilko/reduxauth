@@ -9,8 +9,10 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../Copyright/Copyright';
 import { Registry, URL } from '../../Addresses/Addresses';
+import WebAPI from '../../WebApi';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +45,11 @@ function SignUpForm() {
     passwordValid: false,
     formValid: false,
     redirect: false
-  })
+  });
+
+  const [open,setOpsen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const set = name => {
     return (({ target: { value } }) => {
@@ -55,8 +61,10 @@ function SignUpForm() {
   useEffect(
     (() => {
       localStorage.removeItem('status');
-      localStorage.removeItem('message')
-    })
+      localStorage.removeItem('message');
+      setOpsen(false);
+      setMessage('');
+    }),[]
   );
 
   function validateField(fieldName, value) {
@@ -91,29 +99,31 @@ function SignUpForm() {
       passwordValid: passwordValid,
       formValid: usernameValid && passwordValid && emailValid
     }));
-
-
   }
+
+  function wait(time) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
 
   async function SignUp() {
 
     let user = { username: values.username, email: values.email, password: values.password }
-    let response = await fetch(URL + Registry, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(user)
-    });
-    let data = await response.json();
-    localStorage.setItem('status', data.status)
-    localStorage.setItem('message', data.message)
-    if (localStorage.getItem('status') === 'Success') {
-      alert(localStorage.getItem('message'))
+    let data = await WebAPI('POST',user,URL+Registry);
+    if (data.status === 'Success') {
+      setSeverity('success');
+      setMessage(data.message);
+      setOpsen(true);
+      await wait(1000);
       setValues(oldValues => ({ ...oldValues, redirect: true }));
     }
     else {
-      alert(localStorage.getItem('message'))
+      setSeverity('error');
+      setMessage(data.message);
+      setOpsen(true);
     }
   };
 
@@ -199,9 +209,9 @@ function SignUpForm() {
           </Grid>
         </form>
       </div>
-      <Box style ={{ marginTop: 60}}>
-        <Copyright />
-      </Box>
+      <Snackbar  open={open} anchorOrigin={{vertical :'top', horizontal: 'center'}}>
+        <Alert severity={severity}>{message}</Alert>
+      </Snackbar>
     </Container>
   )
 };

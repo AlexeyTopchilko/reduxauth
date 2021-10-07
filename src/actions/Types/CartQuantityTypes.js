@@ -1,0 +1,2 @@
+export const SET_QUANTITY = "SET_QUANTITY";
+export const RESET_QUANTITY = "RESET_QUANTITY";

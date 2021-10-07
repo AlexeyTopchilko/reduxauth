@@ -28,6 +28,6 @@ export default function CategoryForm(props) {
             </List>
     )}
     catch{
-        return <h1></h1>
+        return;
     }
 }
