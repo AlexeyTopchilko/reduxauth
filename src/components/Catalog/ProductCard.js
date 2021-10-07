@@ -8,10 +8,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { URL, AddToCart } from '../../Addresses/Addresses';
 import { useHistory } from "react-router-dom";
 import WebAPI from '../../WebApi';
+import { setCartQuantity } from '../../actions/CartQuantityActions';
 
 const useStyles = makeStyles({
   root: {
@@ -37,13 +38,16 @@ export default function ProductCard(props) {
   const id = props.id;
   let history=useHistory();
 
-  const authReducer = useSelector(state => state.authReducer)
+  const authReducer = useSelector(state => state.authReducer);
+  const cartQuantityReducer = useSelector(state => state.cartQuantityReducer);
+  const dispatch = useDispatch();
 
   async function AddToCartFunc() {
     if(authReducer.loggedIn){
     let productInfo = { userId: authReducer.user.id, quantity: 1, id: id }
     await WebAPI('POST',productInfo,URL+AddToCart)
     props.notification(true);
+    dispatch(setCartQuantity(cartQuantityReducer.quantity+1));
   }
   else{
       history.push('/signin')

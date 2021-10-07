@@ -3,17 +3,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../Copyright/Copyright';
 import { signIn } from '../../actions/userActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert } from '@material-ui/lab';
+import { Backdrop } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
 function SignInForm() {
   const dispatch = useDispatch();
 
+  const authReducer = useSelector(state => state.authReducer)
+
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -44,10 +47,11 @@ function SignInForm() {
     passwordValid: false,
     formValid: false,
   });
-  const [open,setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState('');
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('Wrong username or password!');
+  const [severity, setSeverity] = useState('error');
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const set = name => {
     return (({ target: { value } }) => {
@@ -89,36 +93,31 @@ function SignInForm() {
 
   function wait(time) {
     return new Promise(resolve => {
-        setTimeout(() => {
-            resolve();
-        }, time);
+      setTimeout(() => {
+        resolve();
+      }, time);
     });
-}
+  }
 
-  async function LogIn(){
-  dispatch(signIn(userInfo));
-  await wait(500);
-  if(localStorage.getItem('token')){
-    setSeverity('success');
-    setMessage('Wellcome!');
-    setOpen(true);
-    await wait(1500);
-    setRedirect(true);
+  async function LogIn() {
+    dispatch(signIn(userInfo));
   }
-  else{
-    setSeverity('error');
-    setMessage('Wrong username or password!');
-    setOpen(true);
-  }
-}
+
+
+  useEffect(() => {
+    setLoading(authReducer.loading);
+    setOpen(authReducer.open)
+    if (authReducer.loggedIn) {
+      setRedirect(true);
+    }
+  }, [authReducer.loading, authReducer.loggedIn])
 
   if (redirect) {
-    return (<Redirect to='/weather' />)
+    return (<Redirect to='/catalog' />)
   }
 
   else {
     return (
-
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper} >
@@ -138,7 +137,7 @@ function SignInForm() {
                   label="Username"
                   inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                   autoFocus
-                  error={values.errors.username !==''}
+                  error={values.errors.username !== ''}
                   helperText={values.errors.username}
                   value={values.username}
                   onChange={set('username')}
@@ -153,7 +152,7 @@ function SignInForm() {
                   label="Password"
                   type="password"
                   id="password"
-                  error={values.errors.password !==''}
+                  error={values.errors.password !== ''}
                   helperText={values.errors.password}
                   inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
                   value={values.password}
@@ -178,14 +177,17 @@ function SignInForm() {
                 </Link>
               </Grid>
             </Grid>
+            <Backdrop
+              style={{ zIndex: "5" }}
+              open={loading}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
           </form>
         </div>
-        <Box style={{marginTop: 60}}>
-          <Copyright />
-        </Box>
-        <Snackbar  open={open} anchorOrigin={{vertical :'top', horizontal: 'right'}} style={{marginTop: 80}}>
-        <Alert severity={severity}>{message}</Alert>
-      </Snackbar>
+        <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} style={{ marginTop: 80 }}>
+          <Alert severity={severity}>{message}</Alert>
+        </Snackbar>
       </Container>
     )
   }

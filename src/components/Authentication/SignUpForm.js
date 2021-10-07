@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../Copyright/Copyright';
 import { Registry, URL } from '../../Addresses/Addresses';
 import WebAPI from '../../WebApi';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -118,7 +117,7 @@ function SignUpForm() {
       setSeverity('success');
       setMessage(data.message);
       setOpsen(true);
-      await wait(2000);
+      await wait(1000);
       setValues(oldValues => ({ ...oldValues, redirect: true }));
     }
     else {
@@ -210,9 +209,6 @@ function SignUpForm() {
           </Grid>
         </form>
       </div>
-      <Box style ={{ marginTop: 60}}>
-        <Copyright />
-      </Box>
       <Snackbar  open={open} anchorOrigin={{vertical :'top', horizontal: 'center'}}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>

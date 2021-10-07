@@ -7,6 +7,11 @@ import AddressForm from '../AddressForms/AddressForm';
 import CatalogForm from '../Catalog/CatalogForm';
 import ProductPage from '../Catalog/ProductPage';
 import WeatherDisplay from '../ForTest/WeatherDisplay';
+import Order from '../Order/Order';
+import UserOrders from '../Order/Orders';
+import Payment from '../Payment';
+import OrderInfo from '../Order/OrderInfo';
+import PaymentStripe from '../PaymentStripe';
 
 export default function Routes() {
     
@@ -19,7 +24,12 @@ export default function Routes() {
             <Route exact path='/weather' component={WeatherDisplay} />
             <Route exact path ='/product/id=:id' component ={ProductPage} />
             <Route exact path="/Cart" component={Cart} />
-            <Route exact path="/address" component={AddressForm} />
+            <Route exact path='/address/cartId=:cartId' component={AddressForm} />
+            <Route exact path='/order/orderId=:orderId' component={Order} />
+            <Route exact path='/orderInfo/orderId=:orderId' component={OrderInfo} />
+            <Route exact path='/myorders' component={UserOrders} />
+            <Route exact path='/payment/orderId=:orderId' component={Payment} />
+            <Route exact path='/stripe/orderId=:orderId' component={PaymentStripe} />
           </Switch>
     )
 }

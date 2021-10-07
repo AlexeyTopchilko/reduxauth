@@ -12,47 +12,38 @@ import { useState } from "react";
 import { URL, RemoveCartLine, CHANGEQUANTITY } from "../../Addresses/Addresses";
 import { TextField } from "@material-ui/core";
 import WebAPI from "../../WebApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartQuantity } from "../../actions/CartQuantityActions";
 
 
 export default function CartLine(props) {
-    const [quantity, setQuantity] = useState(props.quantity);
-    const image = props.image;
-    const name = props.name;
-    const price = props.price;
-    const totalPrice = props.totalPrice;
-    const productId = props.productId;
-    const id = props.id;
+
+    const [product, setProduct] = useState(props.product);
+
+    const dispatch = useDispatch();
+    const cartQuantityReducer = useSelector(state => state.cartQuantityReducer);
+    const token = localStorage.getItem('token');
 
     async function DeleteCartLine() {
-        let params = "?id=" + id;
-        await fetch(URL + RemoveCartLine + params, {
-            method: 'DELETE'
-        });
-        props.handleUpdate();
+        props.deleteCartLine(product.id);
+        dispatch(setCartQuantity(cartQuantityReducer.quantity - product.quantity));
     }
 
-    async function ChangeQuantity(num) {
-        let params = `?id=${id}&quantity=${num}`;
-       WebAPI('PUT',params,URL+CHANGEQUANTITY)
-        props.handleUpdate();
-    }
     const handleChange = (e) => {
         const mask = /^[0-9\b]+$/;
         if (e.target.value === '') {
-            setQuantity(0);
-            ChangeQuantity(0);
+            dispatch(setCartQuantity(cartQuantityReducer.quantity - product.quantity));
+            props.changeCartLine(product.id, 0);
         }
         if (mask.test(e.target.value)) {
-            setQuantity(Number(e.target.value));
-            ChangeQuantity(Number(e.target.value));
+            dispatch(setCartQuantity(cartQuantityReducer.quantity + (Number(e.target.value - product.quantity))));
+            props.changeCartLine(product.id, Number(e.target.value));
         }
     }
 
     async function handleQuantity(num) {
-        let params = "?id=" + id + "&quantity=" + (quantity + num);
-        WebAPI('PUT',params,URL+CHANGEQUANTITY);
-        setQuantity(Number(quantity + num));
-        props.handleUpdate();
+        dispatch(setCartQuantity(cartQuantityReducer.quantity + num))
+        props.changeCartLine(product.id, Number(product.quantity + num));
     }
 
     return (
@@ -60,23 +51,23 @@ export default function CartLine(props) {
             <Grid item xs={4} >
                 <Grid container style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Grid item xs={4} style={{ height: 240 }}>
-                        <CardActionArea style={{ height: '100%' }} href={'/product/id=' + productId} >
+                        <CardActionArea style={{ height: '100%' }} href={'/product/id=' + product.productId} >
                             <CardMedia style={{
                                 height: '100%',
                                 backgroundSize: 'contain'
                             }}
-                                image={'https://blobforcatalog.blob.core.windows.net/blobforcatalog/Images/' + image}
+                                image={'https://blobforcatalog.blob.core.windows.net/blobforcatalog/Images/' + product.image}
                             />
                         </CardActionArea>
                     </Grid>
                     <Grid item xs={4}>
                         <Typography component='h5' variant='h5' >
-                            {name}
+                            {product.name}
                         </Typography>
                     </Grid>
                     <Grid item xs={4} >
                         <Typography component='h5' variant='h5' >
-                            {price}$
+                            {product.price}$
                         </Typography>
                     </Grid>
                 </Grid>
@@ -85,13 +76,13 @@ export default function CartLine(props) {
                 <Grid container style={{ justifyContent: 'space-between' }} >
                     <Grid item xs={4}>
                         <Tooltip title="-1" aria-label="remove">
-                            <Fab color='primary' size="small" onClick={() => { handleQuantity(-1) }} disabled={!(quantity > 0)} >
+                            <Fab color='primary' size="small" onClick={() => { handleQuantity(-1) }} disabled={!(product.quantity > 0)} >
                                 <RemoveIcon />
                             </Fab>
                         </Tooltip>
                     </Grid>
                     <Grid item xs={4}>
-                        <TextField value={quantity === 0 ? '' : quantity} onChange={handleChange} />
+                        <TextField value={product.quantity === 0 ? '' : product.quantity} onChange={handleChange} />
                     </Grid>
                     <Grid item xs={4}>
                         <Tooltip title="+1" aria-label="add">
@@ -104,7 +95,7 @@ export default function CartLine(props) {
             </Grid>
             <Grid item>
                 <Typography component='h5' variant='h5' >
-                    {totalPrice}$
+                    {product.price * product.quantity}$
                 </Typography>
             </Grid>
             <Grid item>

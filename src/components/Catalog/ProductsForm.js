@@ -4,12 +4,16 @@ import ProductCard from './ProductCard';
 
 
 export default function ProductsForm(props) {
-    if (!!props.products) {
+
+    if (props.products === undefined) {
+        return (<h1>Something going wrong</h1>)
+    }
+    else if (props.products.length !== 0) {
         return (
-            <Grid container  justifyContent = "flex-start" spacing={2} style={{ display: 'flex', alignContent: 'normal' }} >
+            <Grid container justifyContent="flex-start" spacing={2} style={{ display: 'flex', alignContent: 'normal' }} >
                 {props.products.map(item =>
                     <Grid item key={item.id} md={3} >
-                        <ProductCard id = {item.id} name={item.name} price={item.price} description={item.description} image={item.image} notification={props.notification}/>
+                        <ProductCard id={item.id} name={item.name} price={item.price} description={item.description} image={item.image} notification={props.notification} />
                     </Grid>
                 )}
             </Grid>

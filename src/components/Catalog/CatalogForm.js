@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { SetSearchMod } from '../../actions/catalogActions';
-import { Categories, Products, ProductsByCategory, ProductsByName, URL } from '../../Addresses/Addresses';
+import { Categories, Products, URL } from '../../Addresses/Addresses';
 import { Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
@@ -17,6 +17,7 @@ import PageSizeButtons from './Buttons/PageSizeButtons';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert } from '@material-ui/lab';
 import WebAPI from '../../WebApi';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -77,28 +78,28 @@ export default function CatalogForm() {
     const dispatch = useDispatch();
 
     async function GetCategories() {
-        let data = await WebAPI('GET','',URL+Categories)
+        let data = await WebAPI('GET', '', URL + Categories)
         setCategories(data);
     };
 
     async function GetProducts() {
-        let params = "?sortMode=" + sortMode + "&skip=" + (page - 1) * pageSize + "&take=" + pageSize;
-        let data = await WebAPI('GET',params,URL+Products)
+        let params = {sortMode: sortMode, skip: (page - 1) * pageSize, take: pageSize};
+        let data = await WebAPI('POST', params, URL + Products)
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setLoading(false);
     };
 
     async function GetProductByName() {
-        let params = "?name=" + catalogReducer.searchString + "&sortMode=" + sortMode + "&skip=" + (page - 1) * pageSize + "&take=" + pageSize;
-        let data = await WebAPI('GET',params,URL+ProductsByName)
+        let params = {name: catalogReducer.searchString, sortMode: sortMode , skip: (page - 1) * pageSize, take: pageSize};
+        let data = await WebAPI('POST', params, URL + Products)
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setLoading(false);
     }
     async function GetProductsByCategory() {
-        let params = "?id=" + catalogReducer.currentCategory.id + "&sortMode=" + sortMode + "&skip=" + (page - 1) * pageSize + "&take=" + pageSize;
-        let data = await WebAPI('GET',params,URL+ProductsByCategory)
+        let params = {categoryId: catalogReducer.currentCategory.id, sortMode: sortMode, skip: (page - 1) * pageSize, take: pageSize};
+        let data = await WebAPI('POST', params, URL + Products)
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setLoading(false);
@@ -147,9 +148,9 @@ export default function CatalogForm() {
                                     variant="outlined"
                                     id="search"
                                     label="Search..."
-                                    inputProps={{ style: { fontSize: 18 }, minLength: "1" }}
+                                    inputProps={{ style: { fontSize: 18 } }}
                                     value={search}
-                                    onChange={e => setSearch(e.target.value)}
+                                    onChange={e =>{ e.target.value.length <=10 ? setSearch(e.target.value) : setSearch(search)}}
                                 />
                                 <Button variant='contained' color="primary" startIcon={<SearchIcon />} onClick={() => { sendSearch(); setSearch(''); setPage(1) }} />
                             </Grid>
@@ -187,5 +188,11 @@ export default function CatalogForm() {
 
         )
     }
-    else { return (<h1>Loading...</h1>) }
+    else {
+        return (
+            <div>
+                <h1>Loading...</h1>
+                <LinearProgress color="primary" />
+            </div>)
+    }
 }
